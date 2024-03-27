@@ -1,4 +1,7 @@
-﻿using Infrastructure.Data;
+﻿using Application.Abstractions;
+using Infrastructure.Data;
+using Infrastructure.Repositories;
+using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -10,6 +13,10 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             services.AddDbContext<AppDbContext>(options => 
                 options.UseInMemoryDatabase(configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped<ICompanyRepository, CompanyRepository>();
+
+            services.AddScoped<ICompanyService, CompanyService>();
 
             return services;
         }
