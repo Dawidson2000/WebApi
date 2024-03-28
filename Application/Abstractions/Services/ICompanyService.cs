@@ -1,7 +1,7 @@
 ﻿using Application.Models.Company;
 using System.Threading;
 
-namespace Application.Abstractions
+namespace Application.Abstractions.Services
 {
     public interface ICompanyService
     {

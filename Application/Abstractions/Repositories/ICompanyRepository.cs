@@ -1,7 +1,7 @@
 ﻿using Application.Models.Company;
 using Domain.Entities;
 
-namespace Application.Abstractions
+namespace Application.Abstractions.Repositories
 {
     public interface ICompanyRepository
     {

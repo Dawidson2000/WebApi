@@ -1,4 +1,4 @@
-﻿using Application.Abstractions;
+﻿using Application.Abstractions.Repositories;
 using Application.Models.Company;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;

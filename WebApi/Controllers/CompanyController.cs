@@ -1,4 +1,4 @@
-﻿using Application.Abstractions;
+﻿using Application.Abstractions.Services;
 using Application.Models.Company;
 using Microsoft.AspNetCore.Mvc;
 
