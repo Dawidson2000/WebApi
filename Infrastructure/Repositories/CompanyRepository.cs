@@ -23,7 +23,7 @@ namespace Infrastructure.Repositories
         public async Task AddCompany(CompanyEntity company, CancellationToken cancellationToken) 
         {
             await _context.Companies.AddAsync(company, cancellationToken);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync(cancellationToken);
         }
     }
 }

@@ -25,6 +25,7 @@ namespace WebApi
                 app.UseSwaggerUI();
             }
 
+            app.UseAuthentication();
             app.UseHttpsRedirection();
 
             app.UseAuthorization();

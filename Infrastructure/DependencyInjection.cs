@@ -1,4 +1,5 @@
 ﻿using Application.Abstractions;
+using Infrastructure.Authentication;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
 using Infrastructure.Services;
@@ -14,6 +15,8 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddDbContext<AppDbContext>(options => 
                 options.UseInMemoryDatabase(configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddJwtAuthentication(configuration);
+            
             services.AddScoped<ICompanyRepository, CompanyRepository>();
 
             services.AddScoped<ICompanyService, CompanyService>();
