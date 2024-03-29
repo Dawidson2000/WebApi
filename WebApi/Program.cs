@@ -1,3 +1,5 @@
+using WebApi.Middlewares;
+
 namespace WebApi
 {
     public class Program
@@ -29,6 +31,7 @@ namespace WebApi
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
+            app.UseMiddlewares();
 
             app.MapControllers().RequireAuthorization();
 
