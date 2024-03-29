@@ -4,6 +4,7 @@ namespace Application.Abstractions.Services
 {
     public interface IAccountService
     {
-        Task RegisterUser(RegisterUser user, CancellationToken cancellationToken);
+        Task RegisterUser(RegisterUser registerUser, CancellationToken cancellationToken);
+        Task<string> LoginUser(LoginUser loginUser, CancellationToken cancellationToken);
     }
 }

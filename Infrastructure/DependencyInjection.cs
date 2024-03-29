@@ -26,6 +26,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.AddScoped<ICompanyService, CompanyService>();
             services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IJwtTokenService, JwtTokenService>();
 
             return services;
         }

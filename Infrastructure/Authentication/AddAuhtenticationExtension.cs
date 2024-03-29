@@ -13,6 +13,7 @@ namespace Infrastructure.Authentication
 
             configuration.GetSection("Authentication").Bind(authenticationSettings);
 
+            services.AddSingleton(authenticationSettings);
             services.AddAuthentication(opt =>
             {
                 opt.DefaultAuthenticateScheme = "Bearer";
