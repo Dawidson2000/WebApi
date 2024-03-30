@@ -27,11 +27,11 @@ namespace WebApi
                 app.UseSwaggerUI();
             }
 
+            app.UseMiddlewares();
             app.UseAuthentication();
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-            app.UseMiddlewares();
 
             app.MapControllers().RequireAuthorization();
 
