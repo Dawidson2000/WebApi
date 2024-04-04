@@ -25,7 +25,7 @@ namespace RazorPages.Pages
         {
             await _accountService.RegisterUser(RegisterUser, cancellationToken);
 
-            return RedirectToPage();
+            return RedirectToPage("Login");
         }
 
     }

@@ -25,7 +25,7 @@ namespace RazorPages.Pages
         {
             var token = await _accountService.LoginUser(LoginUser, cancellationToken);
 
-            return RedirectToPage();
+            return RedirectToPage("Index");
         }
 
     }

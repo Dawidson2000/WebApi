@@ -1,11 +1,13 @@
 ﻿@page
 @model RazorPages.Pages.LoginModel
 @{
-    <h1>Account</h1>
+    <h1>Login</h1>
 
     <form method="post">
-        <button type="submit">Sign in</button>
+        <button type="submit">Login</button>
         <input type="text" name="email" />
         <input type="text" name="password" />
     </form>
+     <a class="nav-link text-dark" asp-area="" asp-page="/SignIn">SignIn</a>
+ 
 }
