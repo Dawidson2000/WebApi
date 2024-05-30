@@ -5,7 +5,10 @@ namespace Application.Abstractions.Repositories
 {
     public interface ICompanyRepository
     {
-        Task<IEnumerable<CreateCompany>> GetAll(CancellationToken cancellationToken);
+        Task<IEnumerable<CompanyEntity>> GetAll(CancellationToken cancellationToken);
         Task AddCompany(CompanyEntity company, CancellationToken cancellationToken);
+        Task<CompanyEntity> GetById(Guid id, CancellationToken cancellationToken);
+        Task UpdateCompany(CompanyEntity company, CancellationToken cancellationToken);
+        Task RemoveCompany(CompanyEntity company, CancellationToken cancellationToken);
     }
 }

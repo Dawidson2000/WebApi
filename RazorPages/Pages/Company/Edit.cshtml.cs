@@ -1,23 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using Domain.Entities;
-using Infrastructure.Data;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Text.Json;
 
 namespace RazorPages.Pages.Company
 {
     public class EditModel : PageModel
     {
-        private readonly Infrastructure.Data.AppDbContext _context;
+        private readonly IHttpClientFactory _httpClientFactory;
 
-        public EditModel(Infrastructure.Data.AppDbContext context)
+        public EditModel(IHttpClientFactory httpClientFactory)
         {
-            _context = context;
+            _httpClientFactory = httpClientFactory;
         }
 
         [BindProperty]
@@ -30,12 +26,25 @@ namespace RazorPages.Pages.Company
                 return NotFound();
             }
 
-            var companyentity =  await _context.Companies.FirstOrDefaultAsync(m => m.Id == id);
-            if (companyentity == null)
+            var client = _httpClientFactory.CreateClient();
+
+            var request = new HttpRequestMessage(HttpMethod.Get, $"https://localhost:7103/companies/{id}");
+
+            var token = HttpContext.Session.GetString("jwtToken"); ;
+
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await client.SendAsync(request);
+
+            var company = await response.Content.ReadFromJsonAsync<CompanyEntity>();
+            
+            if (company == null)
             {
                 return NotFound();
             }
-            CompanyEntity = companyentity;
+            
+            CompanyEntity = company;
+            
             return Page();
         }
 
@@ -48,30 +57,23 @@ namespace RazorPages.Pages.Company
                 return Page();
             }
 
-            _context.Attach(CompanyEntity).State = EntityState.Modified;
+            var client = _httpClientFactory.CreateClient();
 
-            try
+            var jsonContent = JsonSerializer.Serialize(CompanyEntity);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            var request = new HttpRequestMessage(HttpMethod.Put, "https://localhost:7103/companies")
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CompanyEntityExists(CompanyEntity.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+                Content = content
+            };
+
+            var token = HttpContext.Session.GetString("jwtToken"); ;
+
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            await client.SendAsync(request);
 
             return RedirectToPage("./Index");
-        }
-
-        private bool CompanyEntityExists(Guid id)
-        {
-            return _context.Companies.Any(e => e.Id == id);
         }
     }
 }

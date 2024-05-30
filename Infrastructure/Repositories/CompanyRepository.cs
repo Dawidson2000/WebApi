@@ -13,16 +13,34 @@ namespace Infrastructure.Repositories
         private readonly AppDbContext _context = context;
         private readonly IMapper _mapper = mapper;
 
-        public async Task<IEnumerable<CreateCompany>> GetAll(CancellationToken cancellationToken)
+        public async Task<IEnumerable<CompanyEntity>> GetAll(CancellationToken cancellationToken)
         {
             return await _context.Companies
-                .ProjectTo<CreateCompany>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
+        }
+
+        public async Task<CompanyEntity> GetById(Guid id, CancellationToken cancellationToken)
+        {
+            return await _context.Companies
+                .Where(x => x.Id == id)
+                .SingleOrDefaultAsync(cancellationToken);
         }
 
         public async Task AddCompany(CompanyEntity company, CancellationToken cancellationToken) 
         {
             await _context.Companies.AddAsync(company, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task UpdateCompany(CompanyEntity company, CancellationToken cancellationToken)
+        {
+            _context.Companies.Update(company);
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task RemoveCompany(CompanyEntity company, CancellationToken cancellationToken)
+        {
+            _context.Companies.Remove(company);
             await _context.SaveChangesAsync(cancellationToken);
         }
     }

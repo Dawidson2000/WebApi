@@ -23,6 +23,14 @@ namespace WebApi.Controllers
             return Ok(companies);
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult> GetCompany(Guid id, CancellationToken cancellationToken)
+        {
+            var company = await _companyService.GetCompanyById(id, cancellationToken);
+
+            return Ok(company);
+        }
+
         [HttpPost]
         public async Task<ActionResult> AddCompany(CreateCompany company, CancellationToken cancellationToken)
         {
@@ -30,5 +38,22 @@ namespace WebApi.Controllers
 
            return Created(result.ToString(), null);
         }
+
+        [HttpPut]
+        public async Task<ActionResult> UpdateCompany(UpdateCompany company, CancellationToken cancellationToken)
+        {
+            var result = await _companyService.UpdateCompany(company, cancellationToken);
+
+            return Ok(result.ToString());
+        }
+        
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteCompany(Guid id, CancellationToken cancellationToken)
+        {
+            await _companyService.RemoveCompany(id, cancellationToken);
+
+            return NoContent();
+        }
+
     }
 }

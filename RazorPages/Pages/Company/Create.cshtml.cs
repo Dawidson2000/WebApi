@@ -33,25 +33,24 @@ namespace RazorPages.Pages.Company
                 return Page();
             }
 
+            var client = _httpClientFactory.CreateClient();
+
+            var jsonContent = JsonSerializer.Serialize(CompanyEntity);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            var request = new HttpRequestMessage(HttpMethod.Post, "https://localhost:7103/companies")
             {
-                var client = _httpClientFactory.CreateClient();
+                Content = content
+            };
 
-                var jsonContent = JsonSerializer.Serialize(CompanyEntity);
-                var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+            var token = HttpContext.Session.GetString("jwtToken"); ;
 
-                var request = new HttpRequestMessage(HttpMethod.Post, "https://localhost:7103/companies")
-                {
-                    Content = content
-                };
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-                var token = HttpContext.Session.GetString("jwtToken"); ;
+            var response = await client.SendAsync(request);
 
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            return RedirectToPage("./Index");
 
-                var response = await client.SendAsync(request);
-
-                return RedirectToPage("./Index");
-            }
         }
     }
 }

@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using Domain.Entities;
-using Infrastructure.Data;
+using System.Net.Http.Headers;
+using System.Text;
 
 namespace RazorPages.Pages.Company
 {
     public class DeleteModel : PageModel
     {
-        private readonly Infrastructure.Data.AppDbContext _context;
+        private readonly IHttpClientFactory _httpClientFactory;
 
-        public DeleteModel(Infrastructure.Data.AppDbContext context)
+        public DeleteModel(IHttpClientFactory httpClientFactory)
         {
-            _context = context;
+            _httpClientFactory = httpClientFactory;
         }
 
         [BindProperty]
@@ -29,33 +25,44 @@ namespace RazorPages.Pages.Company
                 return NotFound();
             }
 
-            var companyentity = await _context.Companies.FirstOrDefaultAsync(m => m.Id == id);
+            var client = _httpClientFactory.CreateClient();
 
-            if (companyentity == null)
+            var request = new HttpRequestMessage(HttpMethod.Get, $"https://localhost:7103/companies/{id}");
+
+            var token = HttpContext.Session.GetString("jwtToken"); ;
+
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await client.SendAsync(request);
+
+            var company = await response.Content.ReadFromJsonAsync<CompanyEntity>();
+
+            if (company == null)
             {
                 return NotFound();
             }
-            else
-            {
-                CompanyEntity = companyentity;
-            }
+
+            CompanyEntity = company;
+
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(Guid? id)
         {
-            if (id == null)
+            if (!ModelState.IsValid)
             {
-                return NotFound();
+                return Page();
             }
 
-            var companyentity = await _context.Companies.FindAsync(id);
-            if (companyentity != null)
-            {
-                CompanyEntity = companyentity;
-                _context.Companies.Remove(CompanyEntity);
-                await _context.SaveChangesAsync();
-            }
+            var client = _httpClientFactory.CreateClient();
+
+            var request = new HttpRequestMessage(HttpMethod.Delete, $"https://localhost:7103/companies/{id}");
+
+            var token = HttpContext.Session.GetString("jwtToken"); ;
+
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            await client.SendAsync(request);
 
             return RedirectToPage("./Index");
         }

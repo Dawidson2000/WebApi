@@ -30,7 +30,6 @@ namespace RazorPages.Pages.Company
 
         public async Task OnGetAsync()
         {
-
             var client = _httpClientFactory.CreateClient();
 
             var request = new HttpRequestMessage(HttpMethod.Get, "https://localhost:7103/companies");
