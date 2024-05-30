@@ -11,7 +11,10 @@ namespace RazorPages
 
             builder.Services
                 .AddApplication()
-                .AddInfrastructure(builder.Configuration);
+                .AddInfrastructure(builder.Configuration)
+                .AddHttpClient()
+                .AddSession();
+                    
 
             var app = builder.Build();
 
@@ -30,6 +33,7 @@ namespace RazorPages
 
             app.UseAuthorization();
 
+            app.UseSession();
             app.MapRazorPages();
 
             app.Run();
