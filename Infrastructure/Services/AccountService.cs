@@ -3,6 +3,7 @@ using Application.Abstractions.Services;
 using Application.Models.User;
 using AutoMapper;
 using Domain.Entities;
+using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 
 namespace Infrastructure.Services
@@ -55,6 +56,34 @@ namespace Infrastructure.Services
             var token = _jwtTokenService.GenerateToken(user);
             
             return token;
+        }
+        
+        public async Task<IEnumerable<UserEntity>> GetAll(CancellationToken cancellationToken)
+        {
+            return await _accountRepository.GetUsers(cancellationToken);
+        }
+
+        public async Task<UserEntity> GetUserByEmail(string email, CancellationToken cancellationToken)
+        {
+            return await _accountRepository.GetUser(email, cancellationToken);
+        }
+
+        public async Task<Guid> UpdateUser(UserEntity user, CancellationToken cancellationToken) 
+        {
+            var userToUpdate = await _accountRepository.GetUser(user.Email, cancellationToken);
+
+            userToUpdate.Role = user.Role;
+
+            await _accountRepository.UpdateUser(userToUpdate, cancellationToken);
+
+            return userToUpdate.Id;
+        }
+
+        public async Task RemoveUser(string email, CancellationToken cancellationToken)
+        {
+            var userToRemove = await _accountRepository.GetUser(email, cancellationToken);
+
+            await _accountRepository.RemoveUser(userToRemove, cancellationToken);
         }
     }
 }

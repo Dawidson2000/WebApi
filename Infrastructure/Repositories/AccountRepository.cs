@@ -1,5 +1,4 @@
 ﻿using Application.Abstractions.Repositories;
-using AutoMapper;
 using Domain.Entities;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +19,26 @@ namespace Infrastructure.Repositories
         {
             var userEntity = await _context.Users
                .FirstOrDefaultAsync(x => x.Email == email, cancellationToken);
+
+            return userEntity;
+        }
+
+        public async Task UpdateUser(UserEntity user, CancellationToken cancellationToken)
+        {
+             _context.Users.Update(user);       
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task RemoveUser(UserEntity user, CancellationToken cancellationToken)
+        {
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task<IEnumerable<UserEntity>> GetUsers(CancellationToken cancellationToken)
+        {
+            var userEntity = await _context.Users
+               .ToListAsync(cancellationToken);
 
             return userEntity;
         }
