@@ -3,7 +3,7 @@ using Application.Abstractions.Services;
 using Application.Models.User;
 using AutoMapper;
 using Domain.Entities;
-using Infrastructure.Repositories;
+using Domain.Enums;
 using Microsoft.AspNetCore.Identity;
 
 namespace Infrastructure.Services
@@ -31,8 +31,16 @@ namespace Infrastructure.Services
         {
             var userEntity = _mapper.Map<RegisterUser, UserEntity>(registerUser);
 
+            var existedUser = await _accountRepository.GetUser(registerUser.Email, cancellationToken);
+
+            if (existedUser != null) 
+            {
+                return;
+            }
+
             var hashedPassword = _passwordHasher.HashPassword(userEntity, registerUser.Password);
             userEntity.Id = Guid.NewGuid();
+            userEntity.Role = UserRole.Admin;
             userEntity.PasswordHash = hashedPassword;
 
            await _accountRepository.CreateUser(userEntity, cancellationToken);

@@ -32,12 +32,12 @@ namespace RazorPages.Pages
 
             var response = await client.PostAsync("https://localhost:7103/account/login", content);
 
-            var token = await response.Content.ReadAsStringAsync();
-
-            HttpContext.Session.SetString("jwtToken", token);
-
             if (response.IsSuccessStatusCode)
             {
+                var token = await response.Content.ReadAsStringAsync();
+
+                HttpContext.Session.SetString("jwtToken", token);
+                
                 return RedirectToPage("Company/Index");
             }
 
