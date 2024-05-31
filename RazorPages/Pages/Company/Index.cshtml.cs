@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using Domain.Entities;
 using Infrastructure.Data;
-using Application.Models.User;
-using System.Net.Http;
 using System.Text;
 using System.Net.Http.Headers;
 
@@ -26,7 +18,7 @@ namespace RazorPages.Pages.Company
         }
 
 
-        public IList<CompanyEntity> CompanyEntity { get;set; } = default!;
+        public IList<CompanyEntity> CompanyEntity { get;set; } = new List<CompanyEntity>();
 
         public async Task OnGetAsync()
         {
@@ -40,9 +32,12 @@ namespace RazorPages.Pages.Company
 
             var response = await client.SendAsync(request);
 
-            var content = await response.Content.ReadFromJsonAsync<IList<CompanyEntity>>();
+            if (response.IsSuccessStatusCode) 
+            {
+                var content = await response.Content.ReadFromJsonAsync<IList<CompanyEntity>>();
 
-            CompanyEntity = content;
+                CompanyEntity = content;
+            }
         }
     }
 }

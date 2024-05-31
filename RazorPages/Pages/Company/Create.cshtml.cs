@@ -4,7 +4,6 @@ using Domain.Entities;
 using System.Text;
 using System.Text.Json;
 using System.Net.Http.Headers;
-using Newtonsoft.Json.Linq;
 
 namespace RazorPages.Pages.Company
 {
@@ -43,7 +42,7 @@ namespace RazorPages.Pages.Company
                 Content = content
             };
 
-            var token = HttpContext.Session.GetString("jwtToken"); ;
+            var token = HttpContext.Session.GetString("jwtToken");
 
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 

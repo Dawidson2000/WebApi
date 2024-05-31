@@ -1,13 +1,8 @@
-using Application.Abstractions.Services;
 using Application.Models.User;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
-
 
 namespace RazorPages.Pages
 {
