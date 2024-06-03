@@ -17,7 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RazorPages", "RazorPages\Ra
 		{EDFB03ED-B55A-4C00-8A3E-1FABC728096C} = {EDFB03ED-B55A-4C00-8A3E-1FABC728096C}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoapService", "SoapService\SoapService.csproj", "{B03E8F37-3EE2-4256-892E-1AE88FD4BD6F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SoapService", "SoapService\SoapService.csproj", "{B03E8F37-3EE2-4256-892E-1AE88FD4BD6F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{7A5552F3-62BC-4A89-B00C-7D16CB89BE58}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +51,10 @@ Global
 		{B03E8F37-3EE2-4256-892E-1AE88FD4BD6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B03E8F37-3EE2-4256-892E-1AE88FD4BD6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B03E8F37-3EE2-4256-892E-1AE88FD4BD6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A5552F3-62BC-4A89-B00C-7D16CB89BE58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A5552F3-62BC-4A89-B00C-7D16CB89BE58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A5552F3-62BC-4A89-B00C-7D16CB89BE58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A5552F3-62BC-4A89-B00C-7D16CB89BE58}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
